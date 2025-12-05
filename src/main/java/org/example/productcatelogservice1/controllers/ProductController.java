@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
@@ -26,7 +27,7 @@ public class ProductController {
 //    }
 
 
-    @GetMapping("/products")
+    @GetMapping
     public List<Product>  getAllProducts() {
         Product prod1 = new Product();
         prod1.setId(1L);
@@ -36,7 +37,7 @@ public class ProductController {
         return products;
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getProductById(@PathVariable("id") Long id) {
 //        try {
             if(id <= 0) {
@@ -56,23 +57,23 @@ public class ProductController {
 //        }
     }
 
-    @PostMapping("/products")
+    @PostMapping
     public ProductDto addProduct(@RequestBody ProductDto productDto) {
         return productDto;
     }
 
-    @PutMapping("/products/{id}")
+    @PutMapping("/{id}")
     public ProductDto updateProduct(@PathVariable long id,  @RequestBody ProductDto productDto) {
        Product product =  productService.replaceProduct(id, from(productDto));
        return from(product);
     }
 
-    @DeleteMapping("/products")
+    @DeleteMapping
     public ProductDto deleteProduct(@RequestBody ProductDto productDto) {
         return productDto;
     }
 
-    @PatchMapping("/products")
+    @PatchMapping
     public ProductDto patchProduct(@RequestBody ProductDto productDto) {
         return productDto;
     }
