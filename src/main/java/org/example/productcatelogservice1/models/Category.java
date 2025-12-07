@@ -8,7 +8,7 @@ import java.util.List;
 @Setter
 @Getter
 public class Category extends BaseModel {
-    private String categoryName;
-    private String categoryDescription;
+    private String name;
+    private String description;
     private List<Product> products;
 }

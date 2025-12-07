@@ -10,6 +10,6 @@ import java.util.List;
 @Getter
 public class CategoryDto {
     private long id;
-    private String categoryName;
-    private String categoryDescription;
+    private String name;
+    private String description;
 }

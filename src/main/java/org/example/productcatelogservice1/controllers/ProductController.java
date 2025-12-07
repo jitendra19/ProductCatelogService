@@ -88,10 +88,10 @@ public class ProductController {
         productDto.setImageUrl(product.getImageUrl());
         if(product.getCategory() != null) {
             CategoryDto categoryDto = new CategoryDto();
-            categoryDto.setCategoryName(product.getCategory().getCategoryName());
+            categoryDto.setName(product.getCategory().getName());
             categoryDto.setId(product.getCategory().getId());
-            categoryDto.setCategoryDescription(product.getCategory().getCategoryDescription());
-            productDto.setCategoryDto(categoryDto);
+            categoryDto.setDescription(product.getCategory().getDescription());
+            productDto.setCategory(categoryDto);
         }
         return productDto;
     }
@@ -103,10 +103,11 @@ public class ProductController {
         product.setPrice(productDto.getPrice());
         product.setImageUrl(productDto.getImageUrl());
         product.setDescription(productDto.getDescription());
-        if(productDto.getCategoryDto() != null) {
+
+        if(productDto.getCategory() != null) {
             Category category = new Category();
-            category.setId(productDto.getCategoryDto().getId());
-            category.setCategoryName(productDto.getCategoryDto().getCategoryName());
+            category.setId(productDto.getCategory().getId());
+            category.setName(productDto.getCategory().getName());
             product.setCategory(category);
         }
         return product;

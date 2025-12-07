@@ -70,7 +70,7 @@ public class FakeStoreProductService implements  IProductService {
         product.setPrice(fakeStoreProductDto.getPrice());
         product.setImageUrl(fakeStoreProductDto.getImage());
         Category category = new Category();
-        category.setCategoryName(fakeStoreProductDto.getCategory());
+        category.setName(fakeStoreProductDto.getCategory());
         product.setCategory(category);
         return product;
     }
@@ -83,7 +83,7 @@ public class FakeStoreProductService implements  IProductService {
         fakeStoreProductDto.setDescription(product.getDescription());
         fakeStoreProductDto.setImage(product.getImageUrl());
         if(product.getCategory() != null) {
-            fakeStoreProductDto.setCategory(product.getCategory().getCategoryName());
+            fakeStoreProductDto.setCategory(product.getCategory().getName());
         }
         return fakeStoreProductDto;
     }
