@@ -1,9 +1,9 @@
 package org.example.productcatelogservice1.services;
 
+import jakarta.annotation.Nullable;
 import org.example.productcatelogservice1.dtos.FakeStoreProductDto;
 import org.example.productcatelogservice1.models.Category;
 import org.example.productcatelogservice1.models.Product;
-import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
@@ -23,7 +23,7 @@ public class FakeStoreProductService implements  IProductService {
     private RestTemplate restTemplate;
 
     @Override
-    public Product getProductById(long id) {
+    public Product getProductById(Long id) {
 //        FakeStoreProductDto fakeStoreProductDto = restTemplate.getForObject("https://fakestoreapi.com/products/{id}", FakeStoreProductDto.class, id);
         ResponseEntity<FakeStoreProductDto> fakeStoreProductDtoResponseEntity = restTemplate.getForEntity("https://fakestoreapi.com/products/{id}", FakeStoreProductDto.class, id);
         // FROM PRODUCT FROM PRODUCT-DTO
