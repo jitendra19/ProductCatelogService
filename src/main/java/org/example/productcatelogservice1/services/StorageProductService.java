@@ -3,7 +3,6 @@ package org.example.productcatelogservice1.services;
 import org.example.productcatelogservice1.models.Product;
 import org.example.productcatelogservice1.repos.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-//@Primary
+@Primary
 public class StorageProductService implements IProductService {
 
     @Autowired
@@ -30,7 +29,7 @@ public class StorageProductService implements IProductService {
 
     @Override
     public Product createProduct(Product product) {
-        return null;
+        return productRepo.save(product);
     }
 
     @Override

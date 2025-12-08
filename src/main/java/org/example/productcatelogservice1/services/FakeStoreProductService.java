@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Service
-@Primary
+//@Primary
 public class FakeStoreProductService implements  IProductService {
 
     @Autowired

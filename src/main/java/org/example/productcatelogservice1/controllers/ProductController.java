@@ -61,7 +61,6 @@ public class ProductController {
     public ProductDto addProduct(@RequestBody ProductDto productDto) {
         Product product = productService.createProduct(from(productDto));
         return from(product);
-//        return productDto;
     }
 
     @PutMapping("/{id}")
