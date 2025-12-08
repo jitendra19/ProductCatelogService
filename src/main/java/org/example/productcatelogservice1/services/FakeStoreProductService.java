@@ -5,6 +5,7 @@ import org.example.productcatelogservice1.dtos.FakeStoreProductDto;
 import org.example.productcatelogservice1.models.Category;
 import org.example.productcatelogservice1.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Service
+@Primary
 public class FakeStoreProductService implements  IProductService {
 
     @Autowired
@@ -41,6 +43,13 @@ public class FakeStoreProductService implements  IProductService {
 
     @Override
     public Product createProduct(Product product) {
+        FakeStoreProductDto fakeStoreProductDto = from(product);
+
+        ResponseEntity<FakeStoreProductDto> responseEntityDto = restTemplate.postForEntity(
+                "https://fakestoreapi.com/products",  fakeStoreProductDto, FakeStoreProductDto.class);
+        if(responseEntityDto.getStatusCode().equals(HttpStatusCode.valueOf(201)) && responseEntityDto.getBody() != null) {
+            return from(responseEntityDto.getBody());
+        }
         return null;
     }
 

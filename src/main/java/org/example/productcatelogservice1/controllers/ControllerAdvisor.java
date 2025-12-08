@@ -15,6 +15,8 @@ public class ControllerAdvisor {
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<String> handleNullPointerException(Exception exp) {
+        exp.printStackTrace();
+//        System.out.println("NullPointerException- " + exp.getStackTrace());
         return new ResponseEntity<>(exp.getMessage(), HttpStatus.NOT_FOUND); // 404
     }
 
