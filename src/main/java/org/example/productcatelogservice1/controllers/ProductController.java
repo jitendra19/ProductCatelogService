@@ -7,6 +7,7 @@ import org.example.productcatelogservice1.models.Product;
 import org.example.productcatelogservice1.models.Category;
 import org.example.productcatelogservice1.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,8 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
+//    @Qualifier("storageProductService")
+    @Qualifier("sps")
     private IProductService productService;
 
 //    public ProductController(IProductService productService) {
@@ -28,13 +31,14 @@ public class ProductController {
 
 
     @GetMapping
-    public List<Product>  getAllProducts() {
-        Product prod1 = new Product();
-        prod1.setId(1L);
-        prod1.setPrice(2300D);
-        List<Product> products = new ArrayList<>();
-        products.add(prod1);
-        return products;
+    public List<ProductDto>  getAllProducts() {
+        List<ProductDto> list =  new ArrayList<>();
+
+        List<Product> prods = productService.getAllProducts();
+        for(Product prod : prods) {
+            list.add(from(prod));
+        }
+        return list;
     }
 
     @GetMapping("/{id}")
@@ -50,7 +54,7 @@ public class ProductController {
             }
 //            else {
 //                throw new NullPointerException("Not a valid response");
-                throw new ProductNotFoundException("product id should be < 20");
+                throw new ProductNotFoundException("product with requested id is not found;");
 //            }
 //        } catch (Exception e) {
 //            return new ResponseEntity<>((ProductDto) null, HttpStatusCode.valueOf(404));
@@ -66,12 +70,16 @@ public class ProductController {
     @PutMapping("/{id}")
     public ProductDto updateProduct(@PathVariable long id,  @RequestBody ProductDto productDto) {
        Product product =  productService.replaceProduct(id, from(productDto));
-       return from(product);
+       if(product != null) {
+           return from(product);
+       } else {
+           throw new ProductNotFoundException("product with requested id is not found;");
+       }
     }
 
-    @DeleteMapping
-    public ProductDto deleteProduct(@RequestBody ProductDto productDto) {
-        return productDto;
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
     }
 
     @PatchMapping
@@ -101,7 +109,9 @@ public class ProductController {
 
     private Product from(ProductDto productDto) {
         Product product = new Product();
-        product.setId(productDto.getId());
+//        if(productDto.getId() != 0) {
+            product.setId(productDto.getId());
+//        }
         product.setName(productDto.getName());
         product.setPrice(productDto.getPrice());
         product.setImageUrl(productDto.getImageUrl());
@@ -111,6 +121,7 @@ public class ProductController {
             Category category = new Category();
             category.setId(productDto.getCategory().getId());
             category.setName(productDto.getCategory().getName());
+            category.setDescription(productDto.getCategory().getDescription());
             product.setCategory(category);
         }
         return product;
