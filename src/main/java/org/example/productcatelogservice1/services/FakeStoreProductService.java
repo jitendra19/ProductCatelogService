@@ -17,7 +17,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-@Service
+//@Service
+@Service("fsps")
 //@Primary
 public class FakeStoreProductService implements  IProductService {
 
@@ -63,6 +64,12 @@ public class FakeStoreProductService implements  IProductService {
                 "https://fakestoreapi.com/products/{id}", fakeStoreProductDto, HttpMethod.PUT, FakeStoreProductDto.class, id);
 
         return from(fakeStoreProductDtoResponseEntity.getBody());
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        // TODO implement with RequestForEntity
+//        return null;
     }
 
     private <T> ResponseEntity<T> requestForEntity(String url, @Nullable Object request, HttpMethod httpMethod, Class<T> responseType, Object... uriVariables) throws RestClientException {
