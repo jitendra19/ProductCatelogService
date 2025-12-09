@@ -19,4 +19,10 @@ public abstract class BaseModel {
     private Date lastUpdatedAt;
     private Date createdAt;
     private State state;
+
+    public BaseModel() {
+        this.createdAt = new Date();
+        this.lastUpdatedAt = new Date();
+        this.state = State.ACTIVE;
+    }
 }
