@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.lang.runtime.ObjectMethods;
@@ -16,10 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ProductController.class)
 class ProductControllerMvcTest {
@@ -68,9 +70,69 @@ class ProductControllerMvcTest {
 
         mockMvc.perform(get("/products"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(expectedResponse));
-
-
+                .andExpect(content().string(expectedResponse))
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[1].id").value(2L));
     }
 
+    @Test
+    public void testAddProduct_runSuccessfully() throws Exception {
+        ProductDto productDto = new ProductDto();
+        productDto.setName("Mac");
+        productDto.setPrice(100000D);
+        productDto.setId(1L);
+
+        Product product = new Product();
+        product.setId(1L);
+        product.setName("Mac");
+        product.setPrice(100000D);
+
+        when(productService.createProduct(any((Product.class)))).thenReturn(product);
+
+        mockMvc.perform(post("/products")
+                        .content(objectMapper.writeValueAsString(productDto))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(productDto)))
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.name").value("Mac"))
+                .andExpect(jsonPath("$.price").value(100000D));
+    }
+
+    @Test
+    public void testUpdateProduct_runSuccessfully() throws Exception {
+        long id = 1L;
+        ProductDto productDto = new ProductDto();
+        productDto.setName("Mac");
+        productDto.setPrice(100000D);
+        productDto.setId(1L);
+
+        Product product = new Product();
+        product.setId(1L);
+        product.setName("Mac");
+        product.setPrice(100000D);
+
+        when(productService.replaceProduct(anyLong(), any(Product.class))).thenReturn(product);
+
+        mockMvc.perform(put("/products/"+id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productDto)))
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(productDto)))
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.name").value("Mac"))
+                .andExpect(jsonPath("$.price").value(100000D));
+    }
+
+    @Test
+    public void testDeleteProduct_runSuccessfully() throws Exception {
+        Long id = 1L;
+
+        doNothing().when(productService).deleteProduct(id);
+
+        mockMvc.perform(delete("/products/"+id))
+                .andExpect(status().isOk());
+
+        verify(productService, times(1)).deleteProduct(anyLong());
+    }
 }
