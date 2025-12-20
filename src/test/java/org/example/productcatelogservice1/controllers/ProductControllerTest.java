@@ -13,7 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class ProductControllerTest {
@@ -48,6 +49,8 @@ class ProductControllerTest {
         Exception exp =  assertThrows
                 (IllegalArgumentException.class, ()->productController.getProductById(id));
         assertEquals("please pass id > 0", exp.getMessage());
+
+        verify(productService, times(0)).getProductById(anyLong());
     }
 
     @Test

@@ -122,6 +122,8 @@ class ProductControllerMvcTest {
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.name").value("Mac"))
                 .andExpect(jsonPath("$.price").value(100000D));
+
+        verify(productService, times(1)).replaceProduct(anyLong(), any(Product.class));
     }
 
     @Test
