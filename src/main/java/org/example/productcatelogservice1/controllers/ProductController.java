@@ -22,7 +22,7 @@ public class ProductController {
 
     @Autowired
 //    @Qualifier("storageProductService")
-    @Qualifier("sps")
+//    @Qualifier("sps")
     private IProductService productService;
 
 //    public ProductController(IProductService productService) {
