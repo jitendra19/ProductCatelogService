@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.beans.Transient;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,6 +29,18 @@ class CategoryRepoTest {
         // in case of Lazy - this code will fetch product data by JPA
         for(Product product: cat.get().getProducts()){
             System.out.println(product.getName());
+        }
+    }
+
+    @Test
+    @Transactional
+    public void testNPlusOne() {
+        List<Category> cats = categoryRepo.findAll();
+        for(Category cat : cats) {
+            System.out.println(cat.getName());
+            for(Product product: cat.getProducts()){
+                System.out.println(product.getName());
+            }
         }
     }
 }  
