@@ -20,13 +20,14 @@ class CategoryRepoTest {
     @Test
     @Transactional
     public void testFetchType() {
+        // fetch category by ID
         Optional<Category> cat = categoryRepo.findById(6L);
         System.out.println(cat.get().getName());
 
+        // find all products which are associated with Category
+        // in case of Lazy - this code will fetch product data by JPA
         for(Product product: cat.get().getProducts()){
             System.out.println(product.getName());
         }
-
-
     }
-}
+}  
